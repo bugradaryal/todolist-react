@@ -21,14 +21,14 @@ npm run dev
 npm run build
 ```
 
-Netlify: Build command `npm run build`, Publish directory `dist`.
+Netlify: [https://todolist-softwarepersona.netlify.app/](https://todolist-softwarepersona.netlify.app/)
 
 ## Klasör yapısı
 
 ```
 src/
   components/  Header, Stats, TodoForm, Toolbar, TodoList, TodoItem
-  pages/       Home
+  pages/       Home(localstorage ile birlikte)
   interfaces/  Todo (createTodo, PRIORITIES)
   assets/      logo.svg, todo-bg.jpg
 ```

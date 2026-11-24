@@ -1,16 +1,33 @@
-import { useState } from 'react'
-import useLocalStorage from '../hooks/useLocalStorage'
+import { useEffect, useState } from 'react'
 import Header from '../components/Header'
 import Stats from '../components/Stats'
 import TodoForm from '../components/TodoForm'
 import Toolbar from '../components/Toolbar'
 import TodoList from '../components/TodoList'
-import { createTodo, isTodo, STORAGE_KEY } from '../interfaces/Todo'
+import { createTodo } from '../interfaces/Todo'
+
+// localStorage'dan görevleri oku
+function load() {
+  try {
+    return JSON.parse(localStorage.getItem('todos')) || []
+  } catch {
+    return []
+  }
+}
 
 export default function Home() {
-  const [todos, setTodos] = useLocalStorage(STORAGE_KEY, [], isTodo)
+  const [todos, setTodos] = useState(load)
   const [filter, setFilter] = useState('all')
   const [search, setSearch] = useState('')
+
+  // görevler her değiştiğinde kaydet, liste boşsa localStorage'dan sil
+  useEffect(() => {
+    if (todos.length === 0) {
+      localStorage.removeItem('todos')
+    } else {
+      localStorage.setItem('todos', JSON.stringify(todos))
+    }
+  }, [todos])
 
   const addTodo = (text, priority, dueDate) =>
     setTodos([createTodo(text, priority, dueDate), ...todos])
@@ -25,12 +42,10 @@ export default function Home() {
 
   const clearDone = () => setTodos(todos.filter((t) => !t.done))
 
-  // TEMİZLE: localStorage'daki tüm görevleri siler
+  // Temizle: hepsini sil (useEffect localStorage'daki anahtarı da kaldırır)
   const clearAll = () => {
-    if (todos.length === 0) return
     if (window.confirm('Tüm görevler silinecek. Emin misin?')) {
       setTodos([])
-      localStorage.removeItem(STORAGE_KEY)
     }
   }
 
@@ -39,8 +54,6 @@ export default function Home() {
     if (filter === 'done' && !t.done) return false
     return t.text.toLowerCase().includes(search.trim().toLowerCase())
   })
-
-  const hasDone = todos.some((t) => t.done)
 
   return (
     <div className="page">
@@ -68,11 +81,11 @@ export default function Home() {
           onDelete={deleteTodo}
         />
         <div className="footer">
-          <button className="btn" onClick={clearDone} disabled={!hasDone}>
+          <button className="btn" onClick={clearDone} disabled={!todos.some((t) => t.done)}>
             Tamamlananları Temizle
           </button>
           <button className="btn btn-danger" onClick={clearAll} disabled={todos.length === 0}>
-            Temizle (Tümünü Sil - localStorage)
+            Temizle (Tümünü Sil)
           </button>
         </div>
       </section>

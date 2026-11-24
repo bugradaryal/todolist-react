@@ -12,39 +12,56 @@ body {
   padding: 32px 16px 56px;
 }
 
-.page { max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
+/* Sayfa: solda yan panel, sağda liste */
+.page {
+  max-width: 80%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  grid-template-rows: auto auto auto 1fr;
+  gap: 16px 24px;
+  align-items: start;
+}
 
-/* Başlık bandı */
+.header { grid-column: 1; grid-row: 1; }
+.stats { grid-column: 1; grid-row: 2; }
+.todo-form { grid-column: 1; grid-row: 3; }
+section.panel { grid-column: 2; grid-row: 1 / 5; min-height: 520px; }
+
+/* Başlık: dikey, yan panelin üstünde */
 .header {
   display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 24px 28px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 24px;
   border-radius: 18px;
   color: #fff;
   background: linear-gradient(135deg, #4f46e5, #0ea5e9);
   box-shadow: 0 10px 28px rgba(79, 70, 229, 0.25);
 }
 .header h1 { margin: 0; font-size: 1.6rem; }
-.header p { margin: 4px 0 0; opacity: 0.9; font-size: 0.92rem; }
+.header p { margin: 6px 0 0; opacity: 0.9; font-size: 0.9rem; line-height: 1.4; }
 
-/* İstatistikler */
+/* İstatistikler: alt alta, yazı solda sayı sağda */
 .stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 .stat {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: center;
   background: #ffffff;
-  border-radius: 14px;
-  padding: 18px;
-  text-align: center;
+  border-radius: 12px;
+  padding: 12px 18px;
   box-shadow: 0 2px 10px rgba(30, 35, 60, 0.06);
 }
-.stat strong { display: block; font-size: 2rem; color: #4f46e5; }
-.stat span { color: #6b7280; font-size: 0.88rem; }
+.stat strong { font-size: 1.5rem; color: #4f46e5; }
+.stat span { color: #6b7280; font-size: 0.95rem; }
 .progress {
-  grid-column: 1 / -1;
   height: 8px;
   background: #dfe3f0;
   border-radius: 999px;
@@ -81,6 +98,7 @@ input[type='text'], input[type='date'], input[type='search'], select, .edit-inpu
 input:focus, select:focus { outline: 2px solid #4f46e5; border-color: transparent; }
 .todo-form { display: flex; flex-direction: column; gap: 14px; }
 .row { display: flex; gap: 12px; }
+.todo-form .row { flex-direction: column; }
 
 /* Butonlar */
 .btn {
@@ -96,14 +114,20 @@ input:focus, select:focus { outline: 2px solid #4f46e5; border-color: transparen
 .btn:hover:not(:disabled) { background: #f3f4fa; }
 .btn:disabled { opacity: 0.45; cursor: not-allowed; }
 .btn-small { padding: 6px 10px; font-size: 0.82rem; }
-.btn-primary { background: #4f46e5; border-color: #4f46e5; color: #fff; align-self: flex-start; }
+.btn-primary { background: #4f46e5; border-color: #4f46e5; color: #fff; align-self: stretch; }
 .btn-primary:hover:not(:disabled) { background: #4338ca; }
 .btn-danger { color: #dc2626; border-color: #f3c4c4; }
 .btn-danger:hover:not(:disabled) { background: #fdecec; }
 
-/* Araç çubuğu */
-.toolbar { display: flex; gap: 12px; align-items: center; margin-bottom: 8px; flex-wrap: wrap; }
-.search { max-width: 220px; margin-left: auto; }
+/* Araç çubuğu: arama üstte, sekmeler altta */
+.toolbar {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: stretch;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.search { max-width: none; margin: 0; }
 .tabs { display: flex; gap: 6px; }
 .tab {
   border: none;
@@ -117,20 +141,23 @@ input:focus, select:focus { outline: 2px solid #4f46e5; border-color: transparen
 }
 .tab.active { background: #4f46e5; color: #fff; }
 
-/* Liste */
-.todo-list { list-style: none; margin: 0; padding: 0; }
+/* Liste: her görev ayrı bir satır kutusu */
+.todo-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
 .todo-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 14px 4px;
-  border-bottom: 1px solid #e5e7ef;
+  gap: 14px;
+  padding: 14px 16px;
+  background: #f8f9fe;
+  border: 1px solid #e5e7ef;
+  border-radius: 12px;
 }
-.todo-item.editing { flex-direction: column; align-items: stretch; background: #f8f9fe; padding: 14px; border-radius: 12px; margin: 6px 0; }
-.todo-item input[type='checkbox'] { width: 18px; height: 18px; accent-color: #4f46e5; flex-shrink: 0; }
+.todo-item.editing { flex-direction: column; align-items: stretch; background: #fff; border-color: #4f46e5; }
+.todo-item input[type='checkbox'] { width: 20px; height: 20px; accent-color: #4f46e5; flex-shrink: 0; }
 .todo-body { flex: 1; min-width: 0; }
-.todo-text { display: block; word-break: break-word; font-weight: 500; }
-.todo-item.done .todo-text { text-decoration: line-through; color: #6b7280; }
+.todo-text { display: block; word-break: break-word; font-weight: 600; font-size: 1.02rem; }
+.todo-item.done { background: #f3f4f6; }
+.todo-item.done .todo-text { text-decoration: line-through; color: #6b7280; font-weight: 400; }
 .meta { display: flex; gap: 8px; align-items: center; margin-top: 6px; font-size: 0.8rem; }
 .badge { padding: 2px 10px; border-radius: 999px; font-weight: 600; font-size: 0.72rem; }
 .badge-low { background: #e0f2fe; color: #0369a1; }
@@ -140,13 +167,19 @@ input:focus, select:focus { outline: 2px solid #4f46e5; border-color: transparen
 .due.overdue { color: #dc2626; font-weight: 600; }
 .actions { display: flex; gap: 6px; }
 
-.empty { text-align: center; color: #6b7280; padding: 28px 0; }
-.footer { margin-top: 18px; display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
+.empty { text-align: center; color: #6b7280; padding: 60px 0; }
+.footer { margin-top: 20px; display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+
+/* Tablet ve mobil: tek sütun */
+@media (max-width: 820px) {
+  .page { grid-template-columns: 1fr; grid-template-rows: none; }
+  .header, .stats, .todo-form, section.panel { grid-column: 1; grid-row: auto; }
+  section.panel { min-height: 0; }
+  .header { flex-direction: row; align-items: center; }
+}
 
 @media (max-width: 560px) {
-  .stats { grid-template-columns: repeat(3, 1fr); gap: 8px; }
   .row { flex-direction: column; }
-  .search { max-width: none; width: 100%; margin-left: 0; }
   .todo-item:not(.editing) { flex-wrap: wrap; }
   .actions { width: 100%; justify-content: flex-end; }
 }

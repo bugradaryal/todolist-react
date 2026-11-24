@@ -29,7 +29,6 @@ Netlify: Build command `npm run build`, Publish directory `dist`.
 src/
   components/  Header, Stats, TodoForm, Toolbar, TodoList, TodoItem
   pages/       Home
-  interfaces/  Todo (createTodo, isTodo, STORAGE_KEY, PRIORITIES)
-  assets/      logo.svg
-  hooks/       useLocalStorage
+  interfaces/  Todo (createTodo, PRIORITIES)
+  assets/      logo.svg, todo-bg.jpg
 ```

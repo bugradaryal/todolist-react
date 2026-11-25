@@ -27,7 +27,7 @@ Netlify: [https://todolist-softwarepersona.netlify.app/](https://todolist-softwa
 
 ```
 src/
-  components/  Header, Stats, TodoForm, Toolbar, TodoList, TodoItem
+  components/  Header, Footer, Stats, TodoForm, Toolbar, TodoList, TodoItem
   pages/       Home(localstorage ile birlikte)
   interfaces/  Todo (createTodo, PRIORITIES)
   assets/      logo.svg, todo-bg.jpg

@@ -5,6 +5,7 @@ import TodoForm from '../components/TodoForm'
 import Toolbar from '../components/Toolbar'
 import TodoList from '../components/TodoList'
 import { createTodo } from '../interfaces/Todo'
+import Footer from '../components/Footer'
 
 // localStorage'dan görevleri oku
 function load() {
@@ -56,6 +57,7 @@ export default function Home() {
   })
 
   return (
+    <>
     <div className="page">
       <Header />
       <Stats todos={todos} />
@@ -80,7 +82,7 @@ export default function Home() {
           onUpdate={updateTodo}
           onDelete={deleteTodo}
         />
-        <div className="footer">
+        <div className="alt-foot-button">
           <button className="btn" onClick={clearDone} disabled={!todos.some((t) => t.done)}>
             Tamamlananları Temizle
           </button>
@@ -90,5 +92,7 @@ export default function Home() {
         </div>
       </section>
     </div>
+    <Footer/>
+    </>
   )
 }
